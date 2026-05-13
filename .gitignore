@@ -1,0 +1,54 @@
+# =========================
+# 1. SECRETS & CREDENTIALS (CRÍTICO)
+# =========================
+.env
+.env.*
+*.secret
+*.pem
+*.key
+credentials.json
+*_password.txt
+
+# =========================
+# 2. DOCKER & PERSISTENT DATA
+# =========================
+# Ignora las carpetas donde los contenedores guardan datos reales (bases de datos, logs, etc.)
+# Tú solo quieres subir el código (docker-compose.yml), no los datos.
+volumes/
+*/data/
+*/db/
+*/logs/
+*.log
+
+# =========================
+# 3. OS & SYSTEM FILES
+# =========================
+# Basura que generan Windows o Mac si editas archivos desde tu PC principal
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+
+# =========================
+# 4. IDEs & EDITORS
+# =========================
+# Carpetas de configuración de VSCode, vim, etc.
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# =========================
+# 5. SCRIPTING & AUTOMATION
+# =========================
+# Preparado para cuando empieces con Python y automatización
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+env/
+node_modules/
