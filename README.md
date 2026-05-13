@@ -1,6 +1,6 @@
 # HomeLab Infrastructure & Journey
 
-Welcome to my Infrastructure as Code (IaC) and system administration repository. This project documents the provisioning, configuration, and management of a bare-metal home server. 
+Welcome to my Infrastructure as Code (IaC) and system administration repository. This project documents the provisioning, notes on best practices, configuration, and management of a bare-metal home server. 
 
 The primary objective is to bridge the gap between theoretical systems administration and real-world Cloud/DevOps workflows, focusing on headless Linux environments, Docker containerization, and network security.
 
@@ -42,3 +42,22 @@ The environment runs on a dedicated micro-node to simulate a lightweight product
         ├── README.md         # Dashboard specific notes
         ├── docker-compose.yml
         └── config/           # YAML configs (services, widgets)
+```
+
+## Core Architecture & Services
+
+The infrastructure is built around a modular containerized approach. Current services deployed:
+
+| Service | Category | Network Mode | Status |
+| :--- | :--- | :--- | :--- |
+| **Nginx Proxy Manager** | Reverse Proxy / SSL | Macvlan (Dedicated IP) | 🟢 Active |
+| **Pi-hole** | DNS Sinkhole & DHCP | Macvlan (Dedicated IP) | 🟢 Active |
+| **Homepage** | Infrastructure Dashboard | Macvlan (Port mapped) | 🟢 Active |
+
+*(Note: Detailed configuration files, environment setups, and deployment notes for each service are located in their respective folders within this repository).*
+
+## Security Practices Implemented
+
+* **Principle of Least Privilege:** Containers run under dedicated non-root users (`PUID`/`PGID`).
+* **Secret Management:** Sensitive data (passwords, specific IPs) is managed via `.env` files and excluded from version control via `.gitignore`.
+* **Network Segregation:** Services are mapped through a dedicated `macvlan` network to prevent direct host exposure and avoid port mapping conflicts.
