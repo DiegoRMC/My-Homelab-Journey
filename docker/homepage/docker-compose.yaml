@@ -1,0 +1,18 @@
+services:
+  homepage:
+    image: ghcr.io/gethomepage/homepage:latest
+    container_name: homepage
+    restart: unless-stopped
+    volumes:
+      - "./config:/app/config"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    networks:
+      - web_proxy
+    environment:
+      - HOMEPAGE_ALLOWED_HOSTS=homepage.home,homepage,192.168.18.50
+      - TZ=Europe/Madrid
+      - PUID=1000
+      - PGID=1000
+networks:
+  web_proxy:
+    external: true
