@@ -1,0 +1,22 @@
+services:
+  pihole:
+    container_name: pihole
+    image: pihole/pihole:latest
+    restart: unless-stopped
+    environment:
+      TZ: 'Europe/Madrid'
+      WEBPASSWORD: ${PIHOLE_ADMIN_PASS}
+      SERVERIP: '192.168.18.200'
+    volumes:
+      - './etc-pihole:/etc/pihole'
+      - './etc-dnsmasq.d:/etc/dnsmasq.d'
+    networks:
+      pihole_net:
+        ipv4_address: 192.168.18.200
+      web_proxy:
+
+networks:
+  pihole_net:
+    external: true
+  web_proxy:
+    external: true
