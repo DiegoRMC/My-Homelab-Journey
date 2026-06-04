@@ -1,0 +1,12 @@
+services:
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflared
+    restart: unless-stopped
+    networks:
+      - web_proxy
+    command: tunnel run --token ${TUNNEL_TOKEN}
+
+networks:
+  web_proxy:
+    external: true
