@@ -9,10 +9,9 @@ services:
     networks:
       - web_proxy
     environment:
-      - HOMEPAGE_ALLOWED_HOSTS=homepage.home,homepage,192.168.18.50
+      - HOMEPAGE_ALLOWED_HOSTS=$ALLOWED_HOSTS
       - TZ=Europe/Madrid
-      - PUID=1000
-      - PGID=1000
+      - PUID=$PUID
 networks:
   web_proxy:
     external: true
