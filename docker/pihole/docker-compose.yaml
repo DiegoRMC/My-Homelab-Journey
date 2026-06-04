@@ -3,10 +3,13 @@ services:
     container_name: pihole
     image: pihole/pihole:latest
     restart: unless-stopped
+    # Otorga permisos de administración de red a nivel de kernel de Linux, bueno para mcvlan y si en el futuro queremos que actue como server DHCP y reparta direcciones IP por casa
+    cap_add:
+      - NET_ADMIN
     environment:
       TZ: 'Europe/Madrid'
-      WEBPASSWORD: [password goes here]
-      SERVERIP: '192.168.18.200'
+      WEBPASSWORD: '$WEBPASSWORD'
+      FTLCONF_LOCAL_IPV4: '192.168.18.200'
     volumes:
       - './etc-pihole:/etc/pihole'
       - './etc-dnsmasq.d:/etc/dnsmasq.d'
