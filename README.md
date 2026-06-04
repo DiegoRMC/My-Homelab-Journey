@@ -22,7 +22,7 @@ I'm running everything on a tiny, budget-friendly node that acts as my local pro
 └── docker/                   # Containerized services, what I learned deploying them, compose files...
     ├── pihole/
     ├── nginx-proxy-manager/
-    └── homepage/
+    ├── homepage/
     └── cloudflared/
 ```
 
