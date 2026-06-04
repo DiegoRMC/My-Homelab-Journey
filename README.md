@@ -35,6 +35,6 @@ The infrastructure is built around a modular containerized approach. Current ser
 | **Nginx Proxy Manager** | Reverse Proxy / SSL | Bridge | 🟢 Active |
 | **Pi-hole** | DNS Server | Macvlan | 🟢 Active |
 | **Homepage** | Dashboard | Bridge | 🟢 Active |
-| **Homepage** | Zero Trust/Secure Tunnel | Bridge | 🟢 Active |
+| **Cloudflared** | Zero Trust/Secure Tunnel | Bridge | 🟢 Active |
 
 *More notes on each specific service and things I learned deploying them in their respective folders*
