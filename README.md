@@ -1,33 +1,42 @@
-# Host Server Setup & Core Configuration
+# HomeLab Infrastructure & Journey
 
-This document covers the bare-metal foundation of the server. Just the essential configurations applied directly to the host OS before spinning up any Docker containers.
+This repository is my personal logbook where I document everything I'm learning while building and managing my own home server. Just some raw notes, configurations, and concepts I learn and find interesting as I advance.
 
-## Base System & QoL Tools
+## Hardware Specifications
 
-The machine runs on Ubuntu Server 24.04 LTS. Right after the initial headless SSH access, I installed a basic survival kit to monitor and manage the system: **sudo apt install htop git curl neofetch -y**.
+I'm running everything on a tiny, budget-friendly node that acts as my local production server (will definetely upgrade it as we go):
 
-To make logins a bit more useful, I wrote a custom bash script located at `~/scripts/welcome.sh` that outputs system stats and pending updates. I hooked this to the bash profile by appending **alias welcome="sudo ~/scripts/welcome.sh"** to the `~/.bashrc` file.
+* **Machine:** Lenovo ThinkCentre M700 Tiny
+* **CPU:** Intel Core i3-6100T (2 Cores, 4 Threads @ 3.20GHz)
+* **RAM:** 8GB DDR4 Micron @ 2133MHz (1x8GB - 1 slot free)
+* **Storage:** 128GB LiteOn LCH-128V2 SSD
+* **Network:** Intel I219-V Gigabit Ethernet (10/100/1000 Mbit/s)
 
-## Host Network (Netplan)
+## Repository Structure
 
-To ensure the server doesn't get lost on the network after a reboot, DHCP is disabled. I assigned a static configuration directly in `/etc/netplan/00-installer-config.yaml`:
+```text
+.
+├── README.md                 # This document
+├── .gitignore                # Not really gonna be used for this repository since it's mostly notes, but it's good to have just in case
+├── host-setup/               # Host OS configurations like scripts
+└── docker/                   # Containerized services, what I learned deploying them, compose files...
+    ├── pihole/
+    ├── nginx-proxy-manager/
+    ├── homepage/
+    ├── postgresql/
+    └── cloudflared/
+```
 
-* **Interface:** `eno1`
-* **Static IP:** `192.168.xx.50/24`
-* **Gateway:** `192.168.xx.1`
-* **DNS:** `1.1.1.1` and `8.8.8.8` (Fallback DNS to allow package downloads before Pi-hole is up)
+## Architecture & Services
 
-## Docker networks
+The infrastructure is built around a modular containerized approach. Current services deployed:
 
-Instead of relying on Docker's default bridge for everything, the infrastructure relies on two manually created external networks. This separates physical LAN routing from internal reverse-proxy traffic.
-
-| Network Name | Driver | Purpose | Subnet / Scope |
+| Service | Category | Network Mode | Status |
 | :--- | :--- | :--- | :--- |
-| **pihole_net** | macvlan | Bypasses host port restrictions. Gives containers (like Pi-hole) a dedicated physical IP directly from the router. | 192.168.xx.0/24 |
-| **web_proxy** | bridge | Isolated internal routing. Allows the Cloudflare Tunnel and Nginx to communicate with other services via hostname. | Local |
+| **Nginx Proxy Manager** | Reverse Proxy / SSL | Bridge | 🟢 Active |
+| **Pi-hole** | DNS Server | Macvlan | 🟢 Active |
+| **Homepage** | Dashboard | Bridge | 🟢 Active |
+| **Cloudflared** | Zero Trust/Secure Tunnel | Bridge | 🟢 Active |
+| **PostgreSQL** | Database | Bridge | 🟢 Active |
 
-To instantiate the Macvlan network (this must be done before deploying the compose files that rely on it):
-**docker network create -d macvlan --subnet=192.168.xx.0/24 --gateway=192.168.xx.1 -o parent=eno1 pihole_net**
-
-The internal bridge for the proxy is created simply with:
-**docker network create web_proxy**
+*More notes on each specific service and things I learned deploying them in their respective folders*
