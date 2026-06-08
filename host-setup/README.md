@@ -31,3 +31,17 @@ To instantiate the Macvlan network (this must be done before deploying the compo
 
 The internal bridge for the proxy is created simply with:
 **docker network create web_proxy**
+
+## File sharing
+
+To facilitate secure data ingestion from the primary workstation to the server, an SMB share was configured natively on the host OS using Samba.
+
+* **Security & Authentication:** To prevent unauthorized access from other devices on the local network, a dedicated Samba password was generated for the host user via **sudo smbpasswd -a diego**.
+* **Configuration:** The share was defined by appending the following block to **/etc/samba/smb.conf**, locking read/write access strictly to the authenticated user:
+
+```ini
+[MINIPC]
+   path = /home/diego/pcdiego
+   valid users = diego
+   read only = no
+   browseable = yes
