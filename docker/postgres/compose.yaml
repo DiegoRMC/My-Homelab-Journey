@@ -1,0 +1,17 @@
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:18
+    restart: unless-stopped
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./data:/var/lib/postgresql
+    env_file: # This way we don't even need the environment: block, docker just reads it off the .env file
+      - .env
+    networks:
+      - web_proxy
+
+networks:
+  web_proxy:
+    external: true
